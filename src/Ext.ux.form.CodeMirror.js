@@ -35,6 +35,11 @@ Ext.ux.form.CodeMirror = Ext.extend(Ext.form.TextArea, {
     mode: null,
 
     /**
+     * Can be specified when mode is not equal to mode javascript file. Optional.
+     */
+    modeJs: null,
+
+    /**
      * Path to CodeMirror folder. Required.
      */
     codeMirrorPath: null,
@@ -123,7 +128,7 @@ Ext.ux.form.CodeMirror = Ext.extend(Ext.form.TextArea, {
                 });
                 CodeMirror.modeURL = self.codeMirrorPath + "/mode/%N/%N.js";
                 (function(){
-                    CodeMirror.autoLoadMode(self.codeEditor, self.mode);
+                    CodeMirror.autoLoadMode(self.codeEditor, self.modeJs || self.mode);
                 }).defer(201); // magic number of 200 is defined in CodeMirror.requireMode...
 
                 self.initialized = true;
