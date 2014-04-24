@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Ext.ux.form.CodeMirror</title>
+  <meta charset="utf-8"/>
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/extjs/3.4.1-1/resources/css/ext-all.css"/>
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/3.24.0/codemirror.css"/>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/extjs/3.4.1-1/adapter/ext/ext-base.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/extjs/3.4.1-1/ext-all.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/3.24.0/codemirror.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/3.24.0/package/addon/mode/loadmode.js"></script>
+  <script type="text/javascript" src="../src/Ext.ux.form.CodeMirror.js"></script>
+</head>
+
+<body>
+
+<script type="text/javascript">
+  var codeMirrorPath = "https://cdnjs.cloudflare.com/ajax/libs/codemirror/4.0.3";
+  Ext.onReady(function() {
+      var codeMirrorForm;
+      var codeMirrorMinimalForm;
+      var codeMirrorWin;
+      var dlg = new Ext.Window({
+          title: "Window",
+          width: 950,
+          height: 500,
+          minWidth: 100,
+          minHeight: 100,
+          layout: "fit",
+          closeAction: "hide",
+          items: [
+              codeMirrorWin = new Ext.ux.form.CodeMirror({
+                  codeMirrorPath: codeMirrorPath,
+                  mode: "htmlmixed",
+                  value: '<form method="post" name="testform" action="">' +
+                      '<table class="mceItemTable">' +
+                      '<tbody><tr><td>&nbsp;</td><td>&nbsp;</td></tr>' +
+                      '<tr><td>Select 1</td><td><select id="select1" name="select1"><option>option 1</option><option>option 2</option><option>option 3</option></select></td></tr>' +
+                      '<tr><td>Radiobutton 1</td><td><input name="radio1" type="radio" class="radio" value="radio1" id="radio1radio1" /><label id="radio1radio1_label" for="radio1radio1">Radiobutton 1</label></td></tr>' +
+                      '<tr><td>Checkbox 1</td><td><input name="check1" type="checkbox" value="X" class="checkbox val:mandatory," id="check1" /><label id="check1_label" for="check1">Checkbox 1</label></td></tr>' +
+                      '<tr><td>Text 1</td><td><input id="text1" value="text1" name="text1" type="text"/></td></tr>' +
+                      '<tr><td>Textarea 1</td><td><textarea id="textarea1" class="val:mandatory," name="textarea1">Text</textarea></td></tr>' +
+                      '<tr><td>File 1</td><td><input name="file1" type="file" id="file1" /></td></tr>' +
+                      '<tr><td><input class="button" value="Absenden" name="submit" type="submit" /></td>' +
+                      '<td><input class="button" value="Zur&uuml;cksetzen" type="reset" /></td></tr></tbody></table></form>'
+                })
+            ]
+      });
+
+      new Ext.form.FormPanel({
+          title: "Form",
+          frame: true,
+          items: [
+              new Ext.form.TextField({
+                  fieldLabel: "Text"
+              }),
+              codeMirrorMinimalForm = new Ext.ux.form.CodeMirror({
+                  codeMirrorPath: codeMirrorPath,
+                  mode: "css",
+                  codeMirrorConfig: {
+                      lineNumbers: false
+                  },
+                  fieldLabel: "Minimal (Mode: CSS)",
+                  value: "body {\n    color: blue;\n}"
+              }),
+              codeMirrorForm = new Ext.ux.form.CodeMirror({
+                  codeMirrorPath: codeMirrorPath,
+                  mode: "css",
+                  codeMirrorConfig: {
+                      lineNumbers: true
+                  },
+                  fieldLabel: "Line numbers"
+              })
+            ],
+            buttonAlign: "left",
+            buttons: [
+                new Ext.Button({
+                    text: "Open Editor Window",
+                    handler: function() {
+                        dlg.show();
+                    }
+                }),
+                new Ext.Button({
+                    text: "Set Value",
+                    handler: function() {
+                        codeMirrorForm.setValue("<p>my text</p>");
+                        codeMirrorForm.setValue("<p>my text</p>");
+                    }
+                }),
+                new Ext.Button({
+                    text: "Show Value",
+                    handler: function() {
+                        document.getElementById("content").innerHTML = codeMirrorForm.getValue();
+                    }
+                })
+            ],
+            renderTo: "form"
+      });
+
+      Ext.util.Observable.capture(codeMirrorForm, function (evname) {
+          if (console) console.log(evname, arguments);
+      });
+  });
+</script>
+
+<div id="form" style="margin: 20px"></div>
+
+<div id="content" style="margin: 20px"></div>
+
+</body>
+
+</html>
