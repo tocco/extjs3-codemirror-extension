@@ -100,6 +100,7 @@ Ext.ux.form.CodeMirror = Ext.extend(Ext.form.TextArea, {
             afterrender: function () {
                 var self = this;
 
+                CodeMirror.modeURL = self.codeMirrorPath + "/mode/%N/%N.js";
                 var config = {
                     mode: self.mode,
                     lineWrapping: true,
@@ -126,8 +127,8 @@ Ext.ux.form.CodeMirror = Ext.extend(Ext.form.TextArea, {
                 self.codeEditor.on("blur", function(/*cm*/) {
                     self.fireEvent("blur", self);
                 });
-                CodeMirror.modeURL = self.codeMirrorPath + "/mode/%N/%N.js";
                 (function(){
+                    self.codeEditor.setOption("mode", self.mode);
                     CodeMirror.autoLoadMode(self.codeEditor, self.modeJs || self.mode);
                 }).defer(201); // magic number of 200 is defined in CodeMirror.requireMode...
 
